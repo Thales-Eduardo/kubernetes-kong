@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kong-control-plane
+  namespace: kong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kong-control-plane
+  template:
+    metadata:
+      labels:
+        app: kong-control-plane
+    spec:
+      containers:
+        - name: kong
+          image: kong:latest
+          ports:
+            - containerPort: 8000
+            - containerPort: 8443
+          env:
+            - name: KONG_DATABASE
+              value: "off" # Desabilita o uso de banco de dados
+            - name: KONG_DECLARATIVE_CONFIG
+              value: "/usr/local/kong/declarative/kong.yml"
+          volumeMounts:
+            - name: kong-config
+              mountPath: /usr/local/kong/declarative
+          resources:
+            requests: # mínimas
+              cpu: "100m"
+              memory: "512Mi"
+            limits: # máximo
+              cpu: "500m"
+              memory: "2048Mi"
+      volumes:
+        - name: kong-config
+          configMap:
+            name: kong-config

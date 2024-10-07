@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kong-config
+  namespace: kong
+data:
+  kong.yml: |
+    _format_version: "1.1"
+    services:
+      - name: api-ms1-service
+        url: http://api-ms1-service:80
+        routes:
+          - name: user-route
+            paths:
+              - /user
+      - name: api-ms2-service
+        url: http://api-ms2-service:80
+        routes:
+          - name: product-route
+            paths:
+              - /product

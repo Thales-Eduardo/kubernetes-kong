@@ -1,0 +1,10 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: rate-limiting-example
+  namespace: api-test-namespace-dev
+plugin: rate-limiting
+config:
+  second: 2
+  hour: 10000
+  policy: local

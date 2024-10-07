@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-ms2
+  namespace: api-test-namespace-dev
+  labels:
+    app: api-ms2
+    version: 1.0.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-ms2
+  template:
+    metadata:
+      labels:
+        app: api-ms2
+    spec:
+      containers:
+        - name: api-ms2
+          image: user-dockerhub/ms2-go
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000

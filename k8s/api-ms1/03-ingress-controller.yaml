@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kong-ingress-user
+  namespace: api-test-namespace-dev
+  annotations:
+    konghq.com/gatewayclass-unmanaged: "true"
+    konghq.com/preserve-host: "false"
+    konghq.com/strip-path: "true" # Preserva o comportamento de strip path
+    konghq.com/protocols: "http" # Define o protocolo como HTTP
+    konghq.com/override: do-not-preserve-host # Não preserva o host na requisição
+    konghq.com/plugins: rate-limiting-example # Referencia ao plugin de rate limiting
+spec:
+  ingressClassName: kong
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /user
+            pathType: Prefix
+            backend:
+              service:
+                name: api-ms1-service
+                port:
+                  number: 80
